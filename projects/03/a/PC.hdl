@@ -18,5 +18,11 @@ CHIP PC {
     OUT out[16];
     
     PARTS:
-    //// Replace this comment with your code.
+    /* the logic described above may be wrong, it's not a "else if" logic */
+    /* this 3 act sequentially on the last state */
+    Inc16(in=loopback, out=incPC);
+    Mux16(a=loopback, b=incPC, sel=inc, out=tmp1);
+    Mux16(a=tmp1, b=in, sel=load, out=tmp2);
+    Mux16(a=tmp2, b=false, sel=reset, out=newState);
+    Register(in=newState, load=true, out=loopback, out=out);
 }
